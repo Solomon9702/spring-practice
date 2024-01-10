@@ -10,7 +10,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,8 +23,8 @@ public class PdfController {
     @Autowired
     private MemberRepository memberRepository;
 
-    @GetMapping("/createPdf")
-    public void createPdf(HttpServletResponse response) throws IOException {
+    @GetMapping("/createPdf/{id}")
+    public void createPdf(HttpServletResponse response, Model model, @PathVariable Long id) throws IOException {
         // PDF 문서를 브라우저에서 바로 다운로드할 수 있도록 설정
         response.setContentType(MediaType.APPLICATION_PDF_VALUE);
         response.setHeader("Content-Disposition", "attachment; filename=members.pdf");
@@ -31,7 +33,8 @@ public class PdfController {
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(response.getOutputStream()));
         Document document = new Document(pdfDoc);
 
-        document.add(new Paragraph("Hello, world!"));
+        Member member = memberRepository.findById(id).orElse(null);
+        document.add(new Paragraph(member.getEmail()));
 
         // 문서 닫기
         document.close();
