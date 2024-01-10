@@ -6,6 +6,7 @@
         <th scope="col">ID</th>
         <th scope="col">email</th>
         <th scope="col">password</th>
+        <th scope="col">Select</th>
     </tr>
     </thead>
     <tbody>
@@ -14,11 +15,15 @@
             <th>{{id}}</th>
             <td><a href="/members/{{id}}">{{email}}</a></td>
             <td>{{password}}</td>
+            <td><input type="checkbox" name="selectMember" value="{{id}}"></td>
         </tr>
     {{/memberList}}
     </tbody>
 </table>
 
 <a href="/members/new">New Memeber</a>
+<a href="/createPdf">Download PDF</a>
 
 {{>layouts/footer}}
+
+
